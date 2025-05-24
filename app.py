@@ -1,8 +1,9 @@
-import streamlit as st
-
 import uuid
 
+import streamlit as st
+
 from groq_api import chat_with_groq
+
 
 st.set_page_config(page_title="Groq Chatbot", page_icon="🤖")
 st.title("🤖 Chat with LLaMA 3 (via Groq)")
@@ -130,3 +131,4 @@ if user_input:
                 st.session_state.messages.append({"role": "assistant", "content": reply})
             except Exception as e:
                 st.error(f"Error: {e}")
+
