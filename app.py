@@ -4,6 +4,12 @@ import streamlit as st
 
 from groq_api import chat_with_groq
 
+from gtts import gTTS
+
+from io import BytesIO
+
+import textwrap
+
 
 st.set_page_config(page_title="Groq Chatbot", page_icon="🤖")
 st.title("🤖 Chat with LLaMA 3 (via Groq)")
@@ -118,6 +124,21 @@ for msg in st.session_state.messages[1:]:
 
 user_input = st.chat_input("Say something...")
 
+def split_text(text, max_chars=200):
+    # Try to split by sentence end if possible
+    sentences = textwrap.wrap(text, max_chars, break_long_words=False, replace_whitespace=False)
+    return sentences
+
+def play_response_audio(text, max_chars=200):
+    chunks = split_text(text, max_chars)
+    
+    for i, chunk in enumerate(chunks):
+        tts = gTTS(chunk)
+        audio_buffer = BytesIO()
+        tts.write_to_fp(audio_buffer)
+        audio_buffer.seek(0)
+        st.audio(audio_buffer, format="audio/mp3")
+
 if user_input:
     with st.chat_message("user", avatar=avatars["user"]):
         st.markdown(styled_message("user", user_input), unsafe_allow_html=True)
@@ -128,7 +149,7 @@ if user_input:
             try:
                 reply = chat_with_groq(st.session_state.messages)
                 st.markdown(styled_message("assistant", reply), unsafe_allow_html=True)
+                audio_file = play_response_audio(reply)
                 st.session_state.messages.append({"role": "assistant", "content": reply})
             except Exception as e:
                 st.error(f"Error: {e}")
-
