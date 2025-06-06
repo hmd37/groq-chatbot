@@ -1,6 +1,0 @@
-[server]
-headless = true
-runOnSave = true
-
-[general]
-mainModule = "src/app.py"

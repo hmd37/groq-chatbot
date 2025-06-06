@@ -1,7 +1,7 @@
 import streamlit as st
 
-from groq_api import chat_with_groq
-from utils import play_response_audio, styled_message
+from src.groq_api import chat_with_groq
+from src.utils import play_response_audio, styled_message
 
 
 def handle_user_input(avatars):

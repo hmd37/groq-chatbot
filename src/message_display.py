@@ -1,6 +1,6 @@
 import streamlit as st
 
-from utils import styled_message
+from src.utils import styled_message
 
 
 def display_chat_history(avatars):
